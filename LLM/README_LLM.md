@@ -11,8 +11,7 @@ Używamy jednego z: llama2 (https://ollama.com/library/llama2?fbclid=IwAR3V2SH5z
 1. pobranie ze strony (https://ollama.com/download)
 2. przekonaj antywirusa, że komputer nie umrze jak się zainstalluje ollama (jest przekonany, że to przecież wirus) 
 3. jak juz sie uda odpal apke (! nie widać, że jest uruchomiona!)
-
-appdata/local/programs/ollama/ollama app.exe
+4. jesli nie dziala Ci 'import requests' w pythonie: poodaj się i spróbuj na czymś, na czym działa
 
 potrzebne:
 python
