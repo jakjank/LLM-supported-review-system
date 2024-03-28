@@ -3,7 +3,6 @@
 *   Working Agreement - zasady wspólnej współpracy.
     *   Najlepsza forma kontaktu dla każdego z nas - mail? telefon? sms? Teams?
     *   Godziny kontaktu
-    *   Kontakt zastępczy - co jeśli ktoś jest nieosiągalny w danym momencie, a potrzebujemy odpowiedzi ASAP?
     *   Jak szybko musimy dać znać o odwołaniu/przeniesieniu spotkania?
     *   Jak bardzo ważne jest dla nas, by spotkania były zawsze w tym samym terminie co tydzień?
 *   User Stories - przejście krok po kroku, jak miałby być użyty nasz program - na podstawie tego określimy wymagania dla naszego projektu i co **dokładnie** ma w sobie zawierać.
