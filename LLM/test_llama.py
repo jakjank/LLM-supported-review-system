@@ -22,8 +22,8 @@ def answer(messages):
 
 
 while True:
-    user_input = input("Enter a prompt: ")
+    user_input = input("\033[1;92m>>> \033[0;37m")
     if not user_input:
         exit()
-    print("llama2:", answer([{"role": "user", "content": user_input}]))
-    # print("\n")
+    print("\033[1;92mllama2:\033[0;37m", answer([{"role": "user", "content": user_input}]))
+    print("\n")
