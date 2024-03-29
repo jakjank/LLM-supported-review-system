@@ -26,4 +26,4 @@ while True:
     if not user_input:
         exit()
     print("llama2:", answer([{"role": "user", "content": user_input}]))
-    print("\n")
+    # print("\n")
