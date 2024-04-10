@@ -5,7 +5,11 @@ description = "Default template for PDM package"
 authors = [
     {name = "KalBia", email = "340152@uwr.edu.pl"},
 ]
-dependencies = []
+dependencies = [
+    "jsons>=1.6.3",
+    "requests>=2.31.0",
+    "pytest>=8.1.1",
+]
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
@@ -13,7 +17,6 @@ license = {text = "MIT"}
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
-
 
 [tool.pdm]
 distribution = true
