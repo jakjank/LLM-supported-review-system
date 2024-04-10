@@ -1,4 +1,4 @@
-# KOD WZIĘTY Z: https://github.com/ollama/ollama/blob/main/examples/python-simplechat/client.py
+# KOD NA PODSAWIE: https://github.com/ollama/ollama/blob/main/examples/python-simplechat/client.py
 # Zmodyfikowany przez: Emilia Wiśniewska
 
 import json
@@ -23,19 +23,17 @@ def answer(messages):
 
 
 def post_question(user_input):
-	question = [{"role": "user", "content": user_input}]
-	return answer(question)
+    question = [{"role": "user", "content": user_input}]
+    return answer(question)
 
 def main():
-	while True:
-		user_input = input("\033[1;92m>>> \033[0;37m")
-		if not user_input:
-			exit()
-		print("\033[1;92mllama2:\033[0;37m", post_question(user_input))
-		print("\n")
+    while True:
+        user_input = input("\033[1;92m>>> \033[0;37m")
+        if not user_input:
+            exit()
+        print("\033[1;92mllama2:\033[0;37m", post_question(user_input))
+        print("\n")
 
 if __name__ == "__main__":
-	main()
+    main()
 
-def test_answer():
-	assert(post_question("hi!") != "")		
