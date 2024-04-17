@@ -1,0 +1,12 @@
+name: auto-versioning
+run-name: updating version
+on:
+  push:
+    branches: [main]
+jobs:
+  versioning:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Git Automatic Semantic Versioning
+          uses: bitshifted/git-auto-semver@v1.1.0
+            
