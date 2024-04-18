@@ -3,6 +3,7 @@ run-name: updating version
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 jobs:
   versioning:
     runs-on: ubuntu-latest
