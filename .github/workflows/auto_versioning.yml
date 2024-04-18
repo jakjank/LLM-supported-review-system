@@ -10,4 +10,5 @@ jobs:
     steps:
         - name: Git Automatic Semantic Versioning
           uses: bitshifted/git-auto-semver@v1.1.0
-            
+          with:
+            create_tag: true
