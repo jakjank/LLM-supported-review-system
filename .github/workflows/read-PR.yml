@@ -1,28 +1,20 @@
 name: Read PR Body
 run-name: reading PR
+
 on:
   pull_request:
     types: [opened, edited]
 
 jobs:
-  read-pr-body:
+  run-tests:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Read PR Body
-        id: pr_body
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const prNumber = github.context.payload.pull_request.number;
-            const pr = await github.rest.pulls.get({
-              owner: github.context.payload.repository.owner.login,
-              repo: github.context.payload.repository.name,
-              pull_number: prNumber
-            });
-            
-            console.log(pr.data.body);
+    - name: install ollama
+      run: curl -fsSL https://ollama.com/install.sh | sh 
+    - name: download llama2
+      run: ollama pull llama2
+    - name: start llama2
+      run: ollama serve
+      continue-on-error: true
+    - name: say hello
+      run: echo "Hello World"
