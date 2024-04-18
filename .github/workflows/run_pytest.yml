@@ -22,8 +22,8 @@ jobs:
     - name: download llama2
       run: ollama pull llama2
     - name: start llama2
-      working-directory: LLM
-      run: ollama serve --key llmkey
+      run: ollama serve
+      continue-on-error: true
     - name: run pytest
       working-directory: project
       run: pdm run pytest
