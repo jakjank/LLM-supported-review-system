@@ -17,6 +17,12 @@ jobs:
     - name: prepare pdm
       working-directory: project
       run: pdm install
+    - name: install ollama
+      run: curl -fsSL https://ollama.com/install.sh | sh 
+    - name: download llama2
+      run: ollama pull llama2
+    - name: start llama2
+      run: ollama serve
     - name: run pytest
       working-directory: project
       run: pdm run pytest
