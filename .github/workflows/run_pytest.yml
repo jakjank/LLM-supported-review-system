@@ -15,8 +15,8 @@ jobs:
     - name: install pdm
       run: curl -sSL https://pdm-project.org/install-pdm.py | python3 -
     - name: prepare pdm
-      working-directory: /project
+      working-directory: project
       run: pdm install
     - name: run pytest
-      working-directory: /project
+      working-directory: project
       run: pdm run pytest
