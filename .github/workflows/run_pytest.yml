@@ -1,0 +1,29 @@
+name: run-unit-tests
+run-name: ${{ github.actor }} is running unit tests
+
+on:
+  push:
+    paths:
+      - '**.py'
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+    - name: install pdm
+      run: curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+    - name: prepare pdm
+      working-directory: project
+      run: pdm install
+    - name: install ollama
+      run: curl -fsSL https://ollama.com/install.sh | sh 
+    - name: download llama2
+      run: ollama pull llama2
+    - name: start llama2
+      run: ollama serve
+      continue-on-error: true
+    - name: run pytest
+      working-directory: project
+      run: pdm run pytest
