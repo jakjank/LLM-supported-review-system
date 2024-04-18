@@ -1,0 +1,28 @@
+name: Read PR Body
+run-name: reading PR
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  read-pr-body:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Read PR Body
+        id: pr_body
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const pr = await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            console.log(pr.data.body);
