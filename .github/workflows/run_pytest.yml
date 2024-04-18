@@ -14,5 +14,8 @@ jobs:
       uses: actions/checkout@v4
     - name: install pdm
       run: curl -sSL https://pdm-project.org/install-pdm.py | python3 -
-    - name: pytest
+    - name: prepare pdm
+      run: cd project/
+      run: pdm install
+    - name: run pytest
       run: pdm run pytest
