@@ -20,9 +20,9 @@ jobs:
           script: |
             const prNumber = github.context.payload.pull_request.number;
             const pr = await github.rest.pulls.get({
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
+              owner: github.context.payload.repository.owner.login,
+              repo: github.context.payload.repository.name,
               pull_number: prNumber
             });
-
+            
             console.log(pr.data.body);
