@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is running unit tests
 
 on:
   push:
-    paths:yaml
+    paths:
       - '**.py'
 
 jobs:
