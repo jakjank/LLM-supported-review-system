@@ -9,22 +9,19 @@ pip install -U pytest
 https://docs.pytest.org/en/8.0.x/index.html
 
 ## Uruchamianie testu: 
+Należy być w /project
 
 ```bash
-pytest 
+pdm run pytest
 ```
 
-**ważne**: trzeba być w 'LLM-supported-review-system/Research$', inaczej na razie będzie wywalać, bo nie ma jeszcze testów w pozostałych plikach pythonowych
-
-oczywiście ostateczie zostanie to naprawione, ale na razie jest jak jest
+!!! UWAGA !!!
+może ten test trwać bardzo długo - trwa znacznie dłużej niż odpalany lokalnie, ale działa (warto być cierpliwym)
 
 ## Wynik:
+przykładowy poprawny wynik:
+![przyklad_unady_test_ollama](https://github.com/jakjank/LLM-supported-review-system/assets/116657891/c4414c03-a079-4ac3-9860-d44c45a911fd)
 
-jeśli przechodzi dostajemy:
-![PASSED](image-1.png)
-
-a jeśli nie, to:
-![FAILED](image.png)
 
 ## Dodatkowe info:
 
