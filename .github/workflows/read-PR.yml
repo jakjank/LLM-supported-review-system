@@ -20,7 +20,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
     - name: get diff
-    - run: |
-       git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+    - run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
     - run: git diff origin/master HEAD
 
