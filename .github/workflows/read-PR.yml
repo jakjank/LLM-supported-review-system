@@ -16,8 +16,8 @@ jobs:
     - name: start llama2
       run: ollama serve
       continue-on-error: true
-    - name: say hello
-      run: echo "Hello World"
+    - name: checkout
+      uses: actions/checkout@v4
     - name: get diff
       run: git diff origin/master HEAD
 
