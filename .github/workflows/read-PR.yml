@@ -18,4 +18,6 @@ jobs:
       continue-on-error: true
     - name: say hello
       run: echo "Hello World"
+    - name: get diff
+      run: git diff origin/master HEAD
 
