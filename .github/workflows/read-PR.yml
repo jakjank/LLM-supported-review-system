@@ -4,6 +4,7 @@ run-name: reading PR
 on:
   pull_request:
     types: [opened, edited]
+  workflow_dispatch:
 
 jobs:
   run-tests:
