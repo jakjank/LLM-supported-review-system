@@ -22,5 +22,5 @@ jobs:
     - name: fetch
       run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
     - name: get diff
-      run: git diff origin/master HEAD
+      run: git diff origin/main HEAD
 
