@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  run-tests:
+  get diff:
     runs-on: ubuntu-latest
     steps:
 #    - name: install ollama
@@ -21,6 +21,6 @@ jobs:
       uses: actions/checkout@v4
     - name: fetch
       run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-    - name: get diff
+    - name: diff
       run: git diff origin/main HEAD
 
