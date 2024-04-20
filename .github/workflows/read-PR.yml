@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  get diff:
+  get_diff:
     runs-on: ubuntu-latest
     steps:
 #    - name: install ollama
