@@ -10,16 +10,17 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     steps:
-    - name: install ollama
-      run: curl -fsSL https://ollama.com/install.sh | sh 
-    - name: download llama2
-      run: ollama pull llama2
-    - name: start llama2
-      run: ollama serve
-      continue-on-error: true
+#    - name: install ollama
+#      run: curl -fsSL https://ollama.com/install.sh | sh 
+#    - name: download llama2
+#      run: ollama pull llama2
+#    - name: start llama2
+#      run: ollama serve
+#      continue-on-error: true
     - name: checkout
       uses: actions/checkout@v4
+    - name: fetch
+      run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
     - name: get diff
-    - run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-    - run: git diff origin/master HEAD
+      run: git diff origin/master HEAD
 
