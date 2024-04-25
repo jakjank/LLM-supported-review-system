@@ -9,8 +9,8 @@ on:
 jobs:
   get_diff:
     runs-on: ubuntu-latest
-    permissions: 
-      pull-requests: write
+    permissions:
+      pull-requests: write
     steps:
 #    - name: install ollama
 #      run: curl -fsSL https://ollama.com/install.sh | sh 
@@ -32,3 +32,5 @@ jobs:
          message: |
            Hello there! Wassup? :D
          pr_number: ${{github.event.number}}
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
