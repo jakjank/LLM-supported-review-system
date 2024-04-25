@@ -10,6 +10,4 @@ jobs:
     steps:
       - name: calculate version
         id: calculate-version
-        uses: bitshifted/git-auto-semver@v1
-      - name: Use version
-        run: echo "Calculated version: ${{ steps.calculate-version.outputs.version-string }}"
+        uses: bitshifted/git-auto-semver@v1.1.0
