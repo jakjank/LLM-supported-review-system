@@ -10,4 +10,4 @@ jobs:
     steps:
       - name: calculate version
         id: calculate-version
-        uses: bitshifted/git-auto-semver@v1.1.0
+        uses: bitshifted/git-auto-semver@v1
