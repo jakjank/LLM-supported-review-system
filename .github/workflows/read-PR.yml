@@ -10,7 +10,7 @@ jobs:
   get_diff:
     runs-on: ubuntu-latest
     permissions: 
-   		pull-requests: write
+      pull-requests: write
     steps:
 #    - name: install ollama
 #      run: curl -fsSL https://ollama.com/install.sh | sh 
@@ -19,16 +19,16 @@ jobs:
 #    - name: start llama2
 #      run: ollama serve
 #      continue-on-error: true
-    - name: checkout
-      uses: actions/checkout@v4
-    - name: fetch
-      run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-    - name: diff
-      run: git diff origin/main HEAD
+     - name: checkout
+       uses: actions/checkout@v4
+     - name: fetch
+       run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+     - name: diff
+       run: git diff origin/main HEAD
 # [ tu bedzie zadawanie promptow llamie aka puszczenie naszego programu ]
-		- name: comment PR
-			uses: thollander/actions-comment-pull-request@v2.5.0
-			with:
-				message: |
-					Hello there! Wassup? :D
-				pr_number: ${{github.event.number}}
+     - name: comment PR
+       uses: thollander/actions-comment-pull-request@v2.5.0
+       with:
+         message: |
+           Hello there! Wassup? :D
+         pr_number: ${{github.event.number}}
