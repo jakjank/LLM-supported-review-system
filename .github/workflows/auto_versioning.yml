@@ -8,7 +8,8 @@ jobs:
   versioning:
     runs-on: ubuntu-latest
     steps:
-        - name: Git Automatic Semantic Versioning
-          uses: bitshifted/git-auto-semver@v1.1.0
-          with:
-            create_tag: true
+      - name: calculate version
+        id: calculate-version
+        uses: bitshifted/git-auto-semver@v1
+      - name: Use version
+        run: echo "Calculated version: ${{ steps.calculate-version.outputs.version-string }}"
