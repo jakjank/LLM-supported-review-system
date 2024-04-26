@@ -3,7 +3,6 @@
 
 import json
 import requests # powinnno działać, jeśli nie to: pip install requests
-import pytest
 
 # NOTE: żeby działało musi być uruchomiona ollama ("$ ollama serve" lub uruchomiona aplikacja)
 model = "llama2"
@@ -26,13 +25,24 @@ def post_question(user_input):
     question = [{"role": "user", "content": user_input}]
     return answer(question)
 
-def main():
-    while True:
-        user_input = input("\033[1;92m>>> \033[0;37m")
-        if not user_input:
-            exit()
-        print("\033[1;92mllama2:\033[0;37m", post_question(user_input))
-        print("\n")
+
+"""
+mozliwosc odpalenia wielokrotnego:
+"""
+import click
+
+@click.command()
+@click.option('--count', default=1, help='Number of sent "hi"s to llama2')
+def main(count):
+    # while True:
+    #     user_input = input("\033[1;92m>>> \033[0;37m")
+    #     if not user_input:
+    #         exit()
+    #     print("\033[1;92mllama2:\033[0;37m", post_question(user_input))
+    #     print("\n")
+    for i in range(count):
+        print(post_question("hi"));
+
 
 if __name__ == "__main__":
     main()
