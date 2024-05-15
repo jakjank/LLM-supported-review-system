@@ -29,6 +29,13 @@ def check_file(filename, ansname=None):
 			with open(ansname, "w") as ans:
 				ans.write(variables_to_change +"\n\n\n\n" + unnecessary_code)
 
+import click
+@click.command()
+@click.option('--input', default="przykladowy_diff.txt", help='Name of the file with ollama input')
+@click.option('--output', default="ollama_output.txt", help='Name of the file for ollama output')
+def main(input, output):
+    check_file(input, output)
+
 
 if __name__ == "__main__":
-	print(check_file("przykladowy_diff.txt"))
+	main()
