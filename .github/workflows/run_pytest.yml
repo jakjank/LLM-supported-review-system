@@ -19,9 +19,9 @@ jobs:
       run: pdm install
     - name: install ollama
       run: curl -fsSL https://ollama.com/install.sh | sh 
-    - name: download llama2
-      run: ollama pull llama2
-    - name: start llama2
+    - name: download llama3
+      run: ollama pull llama3
+    - name: start llama3
       run: ollama serve
       continue-on-error: true
     - name: run pytest
