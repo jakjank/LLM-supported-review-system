@@ -27,7 +27,7 @@ jobs:
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
      - name: diff
        working-directory: SRS_files
-       run: git diff --output=diff.txt origin/main HEAD
+       run: git diff -- '*.py' '*.cpp' '*.c' origin/main HEAD > diff.txt
 # [ tu bedzie zadawanie promptow llamie aka puszczenie naszego programu ]
      - name: just testing - gonna change later on
        working-directory: SRS_files
