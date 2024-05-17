@@ -19,10 +19,12 @@ def check_file(filename, ansname=None, context=None, debug=False):
 
 	with open(filename, "r") as data:
 		with open(context, "r") as context_fd:
+			diff = data.read()
+			context_data = context_fd.read()
 			variables = post_question(f""" Please return all variable names from
 							 this diff from pull-request:
-							  {data.read()}.
-							This is the context of the diff: {context_fd.read()}.
+							  {diff}.
+							This is the context of the diff: {context_data}.
 							Please use json format to return the answer. All variables 
 							 should be saved in the "variables" key. Any extra comment 
 							 on variables or other things
@@ -43,8 +45,8 @@ def check_file(filename, ansname=None, context=None, debug=False):
 			variables_to_change = post_question(f"""Check if all variable names from
 								{variables} are correct and will not create problems later
 								in the code. If not, suggest some new variable names.
-								The diff file is: {data.read()}
-								The context of the diff is: {context_fd.read()}
+								The diff file is: {diff}
+								The context of the diff is: {context_data}
 								If the variable names are not correct, please provide
 								a new diff with correct variable names as well as
 								a comment on why the variable names should be changed below.""")
