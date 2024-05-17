@@ -31,7 +31,7 @@ jobs:
 # [ tu bedzie zadawanie promptow llamie aka puszczenie naszego programu ]
      - name: just testing - gonna change later on
        working-directory: SRS_files
-       run: cat "Hi! Wassup? :D" > comment.txt
+       run: echo "Hi! Wassup? :D" > comment.txt
 # ---------------------------------
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
@@ -40,3 +40,5 @@ jobs:
          pr_number: ${{github.event.number}}
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     - name: clean up
+       run: rm -r SRS_files
