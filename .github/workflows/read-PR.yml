@@ -21,16 +21,24 @@ jobs:
 #      continue-on-error: true
      - name: checkout
        uses: actions/checkout@v4
+     - name: prepare folder for file
+       run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
      - name: diff
+       working-directory: SRS_files
        run: git diff --output=diff.txt origin/main HEAD
 # [ tu bedzie zadawanie promptow llamie aka puszczenie naszego programu ]
+     - name: just testing - gonna change later on
+       working-directory: SRS_files
+       run: echo "Hi! Wassup? :D" > comment.txt
+# ---------------------------------
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
        with:
-         message: |
-           Hello there! Wassup? :D
+         filePath: SRS_files/comment.txt
          pr_number: ${{github.event.number}}
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     - name: clean up
+       run: rm -r SRS_files
