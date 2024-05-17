@@ -30,6 +30,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 							 "comment" key. Please do not write anything else
 							 that the json object, its really important.
 								  """)	
+			
 			# making json object from string if possible:
 			try:
 				variables = json.loads(variables)
@@ -74,6 +75,3 @@ def main(input, output, context, debug):
 
 if __name__ == "__main__":
 	main()
-
-
-# rozbic na dwa prompty, zapytac o bardziej skomplikowane rzeczy, np jak uprościć kod
