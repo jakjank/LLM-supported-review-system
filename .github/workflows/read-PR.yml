@@ -30,7 +30,6 @@ jobs:
        run: pdm install
  # [ przygotowanie srodowiska do pracy ]
      - name: prepare folder for file
-       working-directory: project
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
