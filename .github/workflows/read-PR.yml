@@ -35,7 +35,7 @@ jobs:
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
      - name: diff
-       working-directory: SRS_files
+       working-directory: project/SRS_files
        run: git diff --output=diff.txt origin/main HEAD
  # [ zadawanie promptow llamie ]
      - name: ask prompts
@@ -45,7 +45,7 @@ jobs:
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
        with:
-         filePath: SRS_files/comment.txt
+         filePath: project/SRS_files/comment.txt
          pr_number: ${{github.event.number}}
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
