@@ -37,6 +37,9 @@ jobs:
      - name: diff
        working-directory: project/SRS_files
        run: git diff --output=diff.txt origin/main HEAD
+     - name: context
+       working-directory: project/SRS_files
+       run: touch context.txt
  # [ zadawanie promptow llamie ]
      - name: ask prompts
        working-directory: project
