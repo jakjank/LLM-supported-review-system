@@ -36,7 +36,7 @@ jobs:
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
        with:
-         filePath: /SRS_files/comment.txt
+         filePath: SRS_files/comment.txt
          pr_number: ${{github.event.number}}
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
