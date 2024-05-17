@@ -31,8 +31,8 @@ def check_file(filename, ansname=None):
 
 import click
 @click.command()
-@click.option('--input', default="diff.txt", help='Name of the file with ollama input')
-@click.option('--output', default="comment.txt", help='Name of the file for ollama output')
+@click.option('--input', default="SRS_files/diff.txt", help='Name of the file with ollama input')
+@click.option('--output', default="SRS_files/comment.txt", help='Name of the file for ollama output')
 def main(input, output):
     check_file(input, output)
 
