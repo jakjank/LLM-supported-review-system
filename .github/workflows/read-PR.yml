@@ -38,7 +38,7 @@ jobs:
        run: git diff --output=diff.txt origin/main HEAD
  # [ zadawanie promptow llamie ]
      - name: ask prompts
-       run: pdm python run project/src/project/prompt1.py
+       run: pdm run python project/src/project/prompt1.py
  # [ dodanie komentarza ]
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
