@@ -65,9 +65,9 @@ def check_file(filename, ansname=None, context=None, debug=False):
 
 
 @click.command()
-@click.option('--input', default="przykladowy_diff.txt", help='Name of the file with ollama input')
-@click.option('--output', default="ollama_output.txt", help='Name of the file for ollama output')
-@click.option('--context', default="context.txt", help='Name of the file with context of diff')
+@click.option('--input', default="SRS_files/diff.txt", help='Name of the file with ollama input')
+@click.option('--output', default="SRS_files/comment.txt", help='Name of the file for ollama output')
+@click.option('--context', default="SRS_files/context.txt", help='Name of the file with context of diff')
 @click.option('--debug', default=False, help='Debug mode')
 def main(input, output, context, debug):
     check_file(input, output, context, debug)

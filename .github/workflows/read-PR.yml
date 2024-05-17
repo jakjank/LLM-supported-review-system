@@ -7,38 +7,49 @@ on:
   workflow_dispatch:
 
 jobs:
-  get_diff:
+  review-system:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
-#    - name: install ollama
-#      run: curl -fsSL https://ollama.com/install.sh | sh 
-#    - name: download llama2
-#      run: ollama pull llama2
-#    - name: start llama2
-#      run: ollama serve
-#      continue-on-error: true
      - name: checkout
        uses: actions/checkout@v4
+  # [ przygotowanie llamy ]
+     - name: install ollama
+       run: curl -fsSL https://ollama.com/install.sh | sh 
+     - name: download llama2
+       run: ollama pull llama2
+     - name: start llama2
+       run: ollama serve
+       continue-on-error: true
+ # [ przygotowanie pdm - tego pewnie kiedy nie bedzie - chcemy miec w przyszlosci Dockera i skompilowana paczke pythonowa ]
+     - name: install pdm
+       run: curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+     - name: prepare pdm
+       working-directory: project
+       run: pdm install
+ # [ przygotowanie srodowiska do pracy ]
      - name: prepare folder for file
+       working-directory: project
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
      - name: diff
-       working-directory: SRS_files
+       working-directory: project/SRS_files
        run: git diff --output=diff.txt origin/main HEAD
-# [ tu bedzie zadawanie promptow llamie aka puszczenie naszego programu ]
-     - name: just testing - gonna change later on
-       working-directory: SRS_files
-       run: echo "Hi! Wassup? :D" > comment.txt
-# ---------------------------------
+ # [ zadawanie promptow llamie ]
+     - name: ask prompts
+       working-directory: project
+       run: pdm run python src/project/prompt1.py
+ # [ dodanie komentarza ]
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
        with:
-         filePath: SRS_files/comment.txt
+         filePath: project/SRS_files/comment.txt
          pr_number: ${{github.event.number}}
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ # [ posprzatanie srodowiska po pracy ]
      - name: clean up
+       working-directory: project
        run: rm -r SRS_files

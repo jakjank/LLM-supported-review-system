@@ -21,3 +21,6 @@ build-backend = "pdm.backend"
 
 [tool.pdm]
 distribution = true
+
+[tool.pdm.scripts]
+prompt1 = "python run project/src/project/prompt1.py"
