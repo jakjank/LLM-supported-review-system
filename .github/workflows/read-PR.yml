@@ -30,6 +30,7 @@ jobs:
        run: pdm install
  # [ przygotowanie srodowiska do pracy ]
      - name: prepare folder for file
+       working-directory: project
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
@@ -38,6 +39,7 @@ jobs:
        run: git diff --output=diff.txt origin/main HEAD
  # [ zadawanie promptow llamie ]
      - name: ask prompts
+       working-directory: project
        run: pdm run python project/src/project/prompt1.py
  # [ dodanie komentarza ]
      - name: comment PR
