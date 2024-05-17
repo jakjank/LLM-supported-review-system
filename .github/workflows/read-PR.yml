@@ -51,4 +51,5 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  # [ posprzatanie srodowiska po pracy ]
      - name: clean up
+       working-directory: project
        run: rm -r SRS_files
