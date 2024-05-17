@@ -6,7 +6,7 @@ import requests # powinnno działać, jeśli nie to: pip install requests
 import click
 
 # NOTE: żeby działało musi być uruchomiona ollama ("$ ollama serve" lub uruchomiona aplikacja)
-model = "llama2"
+model = "llama3"
 
 
 def answer(messages):
@@ -31,7 +31,7 @@ def post_question(user_input):
 mozliwosc odpalenia wielokrotnego:
 """
 @click.command()
-@click.option('--count', default=1, help='Number of sent "hi"s to llama2')
+@click.option('--count', default=1, help='Number of sent "hi"s to llama3')
 def llama_sample_main(count):
     # while True:
     #     user_input = input("\033[1;92m>>> \033[0;37m")

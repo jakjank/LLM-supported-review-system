@@ -17,9 +17,9 @@ jobs:
   # [ przygotowanie llamy ]
      - name: install ollama
        run: curl -fsSL https://ollama.com/install.sh | sh 
-     - name: download llama2
-       run: ollama pull llama2
-     - name: start llama2
+     - name: download llama3
+       run: ollama pull llama3
+     - name: start llama3
        run: ollama serve
        continue-on-error: true
  # [ przygotowanie pdm - tego pewnie kiedy nie bedzie - chcemy miec w przyszlosci Dockera i skompilowana paczke pythonowa ]
