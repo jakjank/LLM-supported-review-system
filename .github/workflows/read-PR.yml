@@ -52,7 +52,7 @@ jobs:
        run: export PYTHONPATH=$PWD/src
      - name: run prompt-1
        working-directory: project
-       run: python -m project.prompt1
+       run: python -m project
  # [ dodanie komentarza ]
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
