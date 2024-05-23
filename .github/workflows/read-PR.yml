@@ -49,7 +49,7 @@ jobs:
        run: pip install dist/project-0.1.0-py3-none-any.whl
      - name: run prompt-1
        working-directory: project
-       run: python -m project.prompt1
+       run: run_prompt_1
  # [ dodanie komentarza ]
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
