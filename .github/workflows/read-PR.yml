@@ -41,9 +41,18 @@ jobs:
        working-directory: project/SRS_files
        run: touch context.txt
  # [ zadawanie promptow llamie ]
-     - name: ask prompts
+     - name: prepare package
        working-directory: project
-       run: pdm run python src/project/prompt1.py
+       run: pdm build
+     - name: install package
+       working-directory: project
+       run: pip install dist/project-0.1.0-py3-none-any.whl
+     - name: set python path
+       working-directory: project
+       run: export PYTHONPATH=$PWD/src
+     - name: run prompt-1
+       working-directory: project
+       run: python -m project
  # [ dodanie komentarza ]
      - name: comment PR
        uses: thollander/actions-comment-pull-request@v2.5.0
