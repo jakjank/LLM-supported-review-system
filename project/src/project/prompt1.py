@@ -20,6 +20,13 @@ def check_file(filename, ansname=None, context=None, debug=False):
 	with open(filename, "r") as data:
 		with open(context, "r") as context_fd:
 			diff = data.read()
+
+			if(len(data) <= 3): # if diff is empty
+				with open(ansname, "w") as ans:
+					ans.write("Nie ma zmian w plikach pythonowych")
+					return
+				
+			# if diff is not empty:
 			context_data = context_fd.read()
 			variables = post_question(f""" Please return all variable names from
 							 this diff from pull-request:
