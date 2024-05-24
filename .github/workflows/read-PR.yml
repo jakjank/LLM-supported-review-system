@@ -42,15 +42,13 @@ jobs:
        run: touch context.txt
      - name: identify changed python files
        working-directory: project/SRS_files
-       run: |
-         CHANGED_FILES=$(git diff --name-only origin/main HEAD | grep '.py$' || true)
-         echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
+       run: git diff --name-only origin/main HEAD -- '*.py' > changed_files.txt
      - name: put data in context file
        working-directory: project/SRS_files
        run: |
-         for file in ${{ env.CHANGED_FILES }}; do
-           echo "\n\n# File: $file" >> $output_file
-           cat "$file" >> $output_file
+         for file in $(cat changed_files.txt); do
+           echo "\n\n# File: $file" >> context.txt
+           cat "$file" >> context.txt
          done
  # [ zadawanie promptow llamie ]
      - name: prepare package
