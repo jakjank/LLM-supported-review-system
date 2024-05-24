@@ -43,28 +43,22 @@ jobs:
      - name: put data in diff file
        run: |
          for file in $(cat project/SRS_files/changed_files.txt); do
-           echo -e "\n# File: $file" >> project/SRS_files/diff.txt
+           echo "# File: $file" >> project/SRS_files/diff.txt
            git diff origin/main HEAD -- $file >> project/SRS_files/diff.txt
          done
-     - name: debug cat diff.txt
-       working-directory: project/SRS_files
-       run: cat diff.txt
      - name: create context file
        working-directory: project/SRS_files
        run: touch context.txt
      - name: put data in context file
        run: |
          for file in $(cat project/SRS_files/changed_files.txt); do
-           echo -e "\n# File: $file" >> project/SRS_files/context.txt
+           echo "# File: $file" >> project/SRS_files/context.txt
            if [ -f "$file" ]; then
              cat "$file" >> project/SRS_files/context.txt
            else
              echo "File '$file' was probably deleted or moved." >> project/SRS_files/context.txt
            fi
          done
-     - name: debug cat context.txt
-       working-directory: project/SRS_files
-       run: cat context.txt
  # [ zadawanie promptow llamie ]
      - name: prepare package
        working-directory: project
