@@ -46,18 +46,14 @@ jobs:
      - name: identify changed python files
        working-directory: project/SRS_files
        run: git diff --name-only origin/main HEAD | grep '\.py$' > changed_files.txt
-     - name: debug add string to changed_files.txt
-       working-directory: project/SRS_files
-       run: echo "end of context file" >> changed_files.txt
      - name: debug cat changed_files.txt
        working-directory: project/SRS_files
        run: cat changed_files.txt
      - name: put data in context file
-       working-directory: project/SRS_files
        run: |
          for file in $(cat changed_files.txt); do
-           echo "\n\n# File: $file" >> context.txt
-           cat "$file" >> context.txt
+           echo "\n\n# File: $file" >> SRS_files/context.txt
+           cat "$file" >> SRS_files/context.txt
          done
      - name: debug add string to context.txt
        working-directory: project/SRS_files
