@@ -37,6 +37,9 @@ jobs:
      - name: create and put data in diff file
        working-directory: project/SRS_files
        run: git diff --output=diff.txt origin/main HEAD -- '*.py'
+     - name: debug cat diff.txt
+       working-directory: project/SRS_files
+       run: cat diff.txt
      - name: create context file
        working-directory: project/SRS_files
        run: touch context.txt
@@ -50,6 +53,9 @@ jobs:
            echo "\n\n# File: $file" >> context.txt
            cat "$file" >> context.txt
          done
+     - name: debug cat context.txt
+       working-directory: project/SRS_files
+       run: cat diff.txt
  # [ zadawanie promptow llamie ]
      - name: prepare package
        working-directory: project
