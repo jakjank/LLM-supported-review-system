@@ -34,12 +34,31 @@ jobs:
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-     - name: diff
+     - name: identify changed python files
        working-directory: project/SRS_files
-       run: git diff --output=diff.txt origin/main HEAD
-     - name: context
+       run: git diff --name-only origin/main HEAD | grep '\.py$' > changed_files.txt
+     - name: create diff file
+       working-directory: project/SRS_files
+       run: touch diff.txt
+     - name: put data in diff file
+       run: |
+         for file in $(cat project/SRS_files/changed_files.txt); do
+           echo "# File: $file" >> project/SRS_files/diff.txt
+           git diff origin/main HEAD -- $file >> project/SRS_files/diff.txt
+         done
+     - name: create context file
        working-directory: project/SRS_files
        run: touch context.txt
+     - name: put data in context file
+       run: |
+         for file in $(cat project/SRS_files/changed_files.txt); do
+           echo "# File: $file" >> project/SRS_files/context.txt
+           if [ -f "$file" ]; then
+             cat "$file" >> project/SRS_files/context.txt
+           else
+             echo "File '$file' was probably deleted or moved." >> project/SRS_files/context.txt
+           fi
+         done
  # [ zadawanie promptow llamie ]
      - name: prepare package
        working-directory: project
