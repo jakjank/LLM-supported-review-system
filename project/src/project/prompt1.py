@@ -21,7 +21,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 		with open(context, "r") as context_fd:
 			diff = data.read()
 
-			if(len(data) <= 3): # if diff is empty
+			if(len(diff) <= 3): # if diff is empty
 				with open(ansname, "w") as ans:
 					ans.write("Nie ma zmian w plikach pythonowych")
 					return
