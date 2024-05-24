@@ -37,6 +37,9 @@ jobs:
      - name: create and put data in diff file
        working-directory: project/SRS_files
        run: git diff --output=diff.txt origin/main HEAD -- '*.py'
+     - name: debug add string to diff.txt
+       working-directory: project/SRS_files
+       run: echo "\nend of diff file" >> diff.txt
      - name: debug cat diff.txt
        working-directory: project/SRS_files
        run: cat diff.txt
@@ -45,7 +48,7 @@ jobs:
        run: touch context.txt
      - name: identify changed python files
        working-directory: project/SRS_files
-       run: git diff --name-only origin/main HEAD -- '*.py' > changed_files.txt
+       run: git diff --name-only origin/main HEAD | grep '\.py$' > changed_files.txt
      - name: put data in context file
        working-directory: project/SRS_files
        run: |
@@ -53,6 +56,9 @@ jobs:
            echo "\n\n# File: $file" >> context.txt
            cat "$file" >> context.txt
          done
+     - name: debug add string to context.txt
+       working-directory: project/SRS_files
+       run: echo "\nend of context file" >> context.txt
      - name: debug cat context.txt
        working-directory: project/SRS_files
        run: cat diff.txt
