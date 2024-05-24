@@ -44,14 +44,13 @@ jobs:
        working-directory: project/SRS_files
        run: |
          CHANGED_FILES=$(git diff --name-only origin/main HEAD | grep '.py$' || true)
-         echo "::set-output name=changed_files::$CHANGED_FILES"
+         echo "CHANGED_FILES=$CHANGED_FILES" >> $GITHUB_ENV
      - name: put data in context file
        working-directory: project/SRS_files
        run: |
-         echo "${{ steps.changed-files.outputs.changed_files }}" > changed_files.txt
-         for file in $(cat changed_files.txt); do
-            echo "\n\n# File: $file" >> combined.txt
-            cat "$file" >> combined.txt
+         for file in ${{ env.CHANGED_FILES }}; do
+           echo "\n\n# File: $file" >> $output_file
+           cat "$file" >> $output_file
          done
  # [ zadawanie promptow llamie ]
      - name: prepare package
