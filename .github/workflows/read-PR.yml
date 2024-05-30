@@ -96,7 +96,7 @@ jobs:
          echo "LINE_POSITION=$(echo $COMMENT_DATA | jq -r .LINE_POSITION)" >> $GITHUB_ENV
          echo "COMMENT_BODY=$(echo $COMMENT_DATA | jq -r .COMMENT_BODY)" >> $GITHUB_ENV
        env:
-         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
      - name: get pull request Info
        id: pr-info
        uses: actions/github-script@v6
@@ -112,7 +112,7 @@ jobs:
            };
      - name: create comment on diff
        env:
-         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        run: |
          OWNER=${{ steps.pr-info.outputs.owner }}
          REPO=${{ steps.pr-info.outputs.repo }}
@@ -120,7 +120,7 @@ jobs:
          
          # Uzyj GitHub API do stworzenia komentarza
          curl -s -X POST \
-           -H "Authorization: token $GH_TOKEN" \
+           -H "Authorization: token $GITHUB_TOKEN" \
            -H "Accept: application/vnd.github.v3+json" \
            https://api.github.com/repos/$OWNER/$REPO/pulls/$PULL_NUMBER/comments \
            -d @- <<EOF
