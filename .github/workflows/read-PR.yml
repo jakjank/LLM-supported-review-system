@@ -100,9 +100,10 @@ jobs:
      - name: Set ENV variables
        run: |
          echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
+         echo "OWNER=$GITHUB_REPOSITORY_OWNER" >> $GITHUB_ENV
      - name: debugging - print environment variables
        run: |
-         echo "OWNER: $GITHUB_REPOSITORY_OWNER"
+         echo "OWNER: ${{ env.OWNER }}"
          echo "REPO: ${{ env.REPO_NAME }}"
          echo "PULL_NUMBER: ${{ github.event.number }}"
          echo "File Path: ${{ env.FILE_PATH }}"
@@ -111,8 +112,8 @@ jobs:
      - name: create comment on diff
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         OWNER: $GITHUB_REPOSITORY_OWNER
-         REPO: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+         OWNER: ${{ env.OWNER }}
+         REPO: ${{ env.REPO_NAME }}
          PULL_NUMBER: ${{ github.event.number }}
          FILE_PATH: ${{ env.FILE_PATH }}
          LINE_POSITION: ${{ env.LINE_POSITION }}
