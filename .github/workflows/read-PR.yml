@@ -101,11 +101,13 @@ jobs:
        run: |
          echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
          echo "OWNER=$GITHUB_REPOSITORY_OWNER" >> $GITHUB_ENV
+         echo "HEAD_SHA=${{ github.event.pull_request.head.sha }}" >> $GITHUB_ENV
      - name: debugging - print environment variables
        run: |
          echo "OWNER: ${{ env.OWNER }}"
          echo "REPO: ${{ env.REPO_NAME }}"
          echo "PULL_NUMBER: ${{ github.event.number }}"
+         echo "HEAD_SHA: ${{ env.HEAD_SHA }}"
          echo "File Path: ${{ env.FILE_PATH }}"
          echo "Line Position: ${{ env.LINE_POSITION }}"
          echo "Comment Body: ${{ env.COMMENT_BODY }}"
@@ -115,6 +117,7 @@ jobs:
          OWNER: ${{ env.OWNER }}
          REPO: ${{ env.REPO_NAME }}
          PULL_NUMBER: ${{ github.event.number }}
+         HEAD_SHA: ${{ env.HEAD_SHA }}
          FILE_PATH: ${{ env.FILE_PATH }}
          LINE_POSITION: ${{ env.LINE_POSITION }}
          COMMENT_BODY: ${{ env.COMMENT_BODY }}
@@ -127,8 +130,9 @@ jobs:
            -d @- <<EOF
          {
            "body": "$COMMENT_BODY",
+           "commit_id": "$HEAD_SHA",
            "path": "$FILE_PATH",
-           "position": $LINE_POSITION
+           "line": $LINE_POSITION
          }
          EOF
          echo "API Response: $RESPONSE"
