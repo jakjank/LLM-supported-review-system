@@ -103,6 +103,11 @@ jobs:
        with:
          script: |
            const pr = context.payload.pull_request;
+           console.log(`Owner: ${context.repo.owner}`);
+           console.log(`Repo: ${context.repo.repo}`);
+           console.log(`Pull Number: ${pr.number}`);
+           console.log(`Base SHA: ${pr.base.sha}`);
+           console.log(`Head SHA: ${pr.head.sha}`);
            return {
              owner: context.repo.owner,
              repo: context.repo.repo,
@@ -110,9 +115,21 @@ jobs:
              base_sha: pr.base.sha,
              head_sha: pr.head.sha
            };
+     - name: debugging - print environment variables
+       run: |
+         echo "Owner: ${{ steps.pr-info.outputs.owner }}"
+         echo "Repo: ${{ steps.pr-info.outputs.repo }}"
+         echo "Pull Number: ${{ steps.pr-info.outputs.pull_number }}"
+         echo "Head SHA: ${{ steps.pr-info.outputs.head_sha }}"
+         echo "File Path: ${{ env.FILE_PATH }}"
+         echo "Line Position: ${{ env.LINE_POSITION }}"
+         echo "Comment Body: ${{ env.COMMENT_BODY }}"
      - name: create comment on diff
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         FILE_PATH: ${{ env.FILE_PATH }}
+         LINE_POSITION: ${{ env.LINE_POSITION }}
+         COMMENT_BODY: ${{ env.COMMENT_BODY }}
        run: |
          OWNER=${{ steps.pr-info.outputs.owner }}
          REPO=${{ steps.pr-info.outputs.repo }}
@@ -131,6 +148,7 @@ jobs:
            "position": $LINE_POSITION
          }
          EOF
+         echo "API Response: $RESPONSE"
  # [ posprzatanie srodowiska po pracy ]
      - name: clean up
        working-directory: project
