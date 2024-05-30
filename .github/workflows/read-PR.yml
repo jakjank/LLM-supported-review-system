@@ -118,10 +118,10 @@ jobs:
        shell: bash
      - name: debugging - print environment variables
        run: |
-         echo "OWNER: ${{ steps.pr-info.outputs.owner }}"
-         echo "REPO: ${{ steps.pr-info.outputs.repo }}"
-         echo "PULL_NUMBER: ${{ steps.pr-info.outputs.pull_number }}"
-         echo "HEAD_SHA: ${{ steps.pr-info.outputs.head_sha }}"
+         echo "OWNER: ${{ env.OWNER }}"
+         echo "REPO: ${{ env.REPO }}"
+         echo "PULL_NUMBER: ${{ env.PULL_NUMBER }}"
+         echo "HEAD_SHA: ${{ env.HEAD_SHA }}"
          echo "File Path: ${{ env.FILE_PATH }}"
          echo "Line Position: ${{ env.LINE_POSITION }}"
          echo "Comment Body: ${{ env.COMMENT_BODY }}"
