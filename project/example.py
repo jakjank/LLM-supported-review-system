@@ -1,4 +1,4 @@
-xxx = 5
-yyy = 3
-zzz = xxx + yyy
+x = 5
+y = 3
+z = x + y
 print("That is just an example python file")
