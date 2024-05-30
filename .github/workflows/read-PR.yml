@@ -100,7 +100,10 @@ jobs:
      - name: get pull request info
        id: pr-info
        run: |
-         echo "${{ github.event.pull_request }}" | jq -r '"\(.head.repo.owner.login) \(.head.repo.name) \(.number) \(.head.sha)"' > pr-info.txt
+         echo "OWNER=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="owner": {"login": ")[^"]*')" >> $GITHUB_ENV
+         echo "REPO=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="name": ")[^"]*')" >> $GITHUB_ENV
+         echo "PULL_NUMBER=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="number": )[^,]*')" >> $GITHUB_ENV
+         echo "HEAD_SHA=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="sha": ")[^"]*')" >> $GITHUB_ENV
      - name: parse pull request info
        run: |
          mapfile -t pr_info < pr-info.txt
@@ -125,10 +128,10 @@ jobs:
      - name: create comment on diff
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         OWNER: ${{ steps.pr-info.outputs.owner }}
-         REPO: ${{ steps.pr-info.outputs.repo }}
-         PULL_NUMBER: ${{ steps.pr-info.outputs.pull_number }}
-         HEAD_SHA: ${{ steps.pr-info.outputs.head_sha }}
+         OWNER: ${{ env.OWNER }}
+         REPO: ${{ env.REPO }}
+         PULL_NUMBER: ${{ env.PULL_NUMBER }}
+         HEAD_SHA: ${{ env.HEAD_SHA }}
          FILE_PATH: ${{ env.FILE_PATH }}
          LINE_POSITION: ${{ env.LINE_POSITION }}
          COMMENT_BODY: ${{ env.COMMENT_BODY }}
