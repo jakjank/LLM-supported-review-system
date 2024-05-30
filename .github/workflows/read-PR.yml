@@ -97,29 +97,23 @@ jobs:
          echo "COMMENT_BODY=$(echo $COMMENT_DATA | jq -r .COMMENT_BODY)" >> $GITHUB_ENV
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-     - name: get pull request info
-       id: pr-info
+     - name: Set ENV variables
        run: |
-         echo "OWNER=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="owner": {"login": ")[^"]*')" >> $GITHUB_ENV
-         echo "REPO=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="name": ")[^"]*')" >> $GITHUB_ENV
-         echo "PULL_NUMBER=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="number": )[^,]*')" >> $GITHUB_ENV
-         echo "HEAD_SHA=$(echo "${{ github.event.pull_request }}" | grep -oP '(?<="sha": ")[^"]*')" >> $GITHUB_ENV
+         echo "REPO_NAME=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}" >> $GITHUB_ENV
      - name: debugging - print environment variables
        run: |
-         echo "OWNER: ${{ env.OWNER }}"
-         echo "REPO: ${{ env.REPO }}"
-         echo "PULL_NUMBER: ${{ env.PULL_NUMBER }}"
-         echo "HEAD_SHA: ${{ env.HEAD_SHA }}"
+         echo "OWNER: $GITHUB_REPOSITORY_OWNER"
+         echo "REPO: ${{ env.REPO_NAME }}"
+         echo "PULL_NUMBER: ${{ github.event.number }}"
          echo "File Path: ${{ env.FILE_PATH }}"
          echo "Line Position: ${{ env.LINE_POSITION }}"
          echo "Comment Body: ${{ env.COMMENT_BODY }}"
      - name: create comment on diff
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-         OWNER: ${{ env.OWNER }}
-         REPO: ${{ env.REPO }}
-         PULL_NUMBER: ${{ env.PULL_NUMBER }}
-         HEAD_SHA: ${{ env.HEAD_SHA }}
+         OWNER: $GITHUB_REPOSITORY_OWNER
+         REPO: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER/}
+         PULL_NUMBER: ${{ github.event.number }}
          FILE_PATH: ${{ env.FILE_PATH }}
          LINE_POSITION: ${{ env.LINE_POSITION }}
          COMMENT_BODY: ${{ env.COMMENT_BODY }}
@@ -132,7 +126,6 @@ jobs:
            -d @- <<EOF
          {
            "body": "$COMMENT_BODY",
-           "commit_id": "$HEAD_SHA",
            "path": "$FILE_PATH",
            "position": $LINE_POSITION
          }
