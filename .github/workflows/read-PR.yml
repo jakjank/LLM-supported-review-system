@@ -97,17 +97,22 @@ jobs:
          echo "COMMENT_BODY=$(echo $COMMENT_DATA | jq -r .COMMENT_BODY)" >> $GITHUB_ENV
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-     - name: get pull request Info
+     - name: get pull request info
        id: pr-info
-       uses: actions/github-script@v6
-       with:
-         script: |
-           const pr = context.payload.pull_request;
-           const owner = context.repo.owner;
-           const repo = context.repo.repo;
-           const pull_number = pr.number;
-           const head_sha = pr.head.sha;
-           return { owner, repo, pull_number, head_sha };
+       run: |
+         echo "${{ github.event.pull_request }}" | jq '.head.repo.owner.login, .head.repo.name, .number, .head.sha' > pr-info.txt
+     - name: parse pull request info
+       run: |
+         mapfile -t pr_info < pr-info.txt
+         OWNER="${pr_info[0]}"
+         REPO="${pr_info[1]}"
+         PULL_NUMBER="${pr_info[2]}"
+         HEAD_SHA="${pr_info[3]}"
+         echo "OWNER=${OWNER}" >> $GITHUB_ENV
+         echo "REPO=${REPO}" >> $GITHUB_ENV
+         echo "PULL_NUMBER=${PULL_NUMBER}" >> $GITHUB_ENV
+         echo "HEAD_SHA=${HEAD_SHA}" >> $GITHUB_ENV
+       shell: bash
      - name: debugging - print environment variables
        run: |
          echo "OWNER: ${{ steps.pr-info.outputs.owner }}"
