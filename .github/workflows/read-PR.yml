@@ -100,7 +100,7 @@ jobs:
      - name: get pull request info
        id: pr-info
        run: |
-         echo "${{ github.event.pull_request }}" | jq '.head.repo.owner.login, .head.repo.name, .number, .head.sha' > pr-info.txt
+         echo "${{ github.event.pull_request }}" | jq -r '"\(.head.repo.owner.login) \(.head.repo.name) \(.number) \(.head.sha)"' > pr-info.txt
      - name: parse pull request info
        run: |
          mapfile -t pr_info < pr-info.txt
