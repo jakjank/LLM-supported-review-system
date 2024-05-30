@@ -132,7 +132,7 @@ jobs:
            "body": "$COMMENT_BODY",
            "commit_id": "$HEAD_SHA",
            "path": "$FILE_PATH",
-           "line": $LINE_POSITION
+           "position": $LINE_POSITION
          }
          EOF
          echo "API Response: $RESPONSE"
