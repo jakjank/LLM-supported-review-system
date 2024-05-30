@@ -59,27 +59,78 @@ jobs:
              echo "File '$file' was probably deleted or moved." >> project/SRS_files/context.txt
            fi
          done
+     - name: create comment file
+       working-directory: project/SRS_files
+       run: touch comment.json
  # [ zadawanie promptow llamie ]
-     - name: prepare package
-       working-directory: project
-       run: pdm build
-     - name: install package
-       working-directory: project
-       run: pip install dist/project-0.1.0-py3-none-any.whl
-     - name: set python path
-       working-directory: project
-       run: export PYTHONPATH=$PWD/src
-     - name: run prompt-1
-       working-directory: project
-       run: python -m project
+#     - name: prepare package
+#       working-directory: project
+#       run: pdm build
+#     - name: install package
+#       working-directory: project
+#       run: pip install dist/project-0.1.0-py3-none-any.whl
+#     - name: set python path
+#       working-directory: project
+#       run: export PYTHONPATH=$PWD/src
+#     - name: run prompt-1
+#       working-directory: project
+#       run: python -m project
+     - name: testing - put example content in comment file
+       working-directory: project/SRS_files
+       run: |
+          cat <<EOF > comment.json
+          {
+            "FILE_PATH": "project/example.py",
+            "LINE_POSITION": 3,
+            "COMMENT_BODY": "This is a comment added by a GitHub Action workflow."
+          }
+          EOF
  # [ dodanie komentarza ]
-     - name: comment PR
-       uses: thollander/actions-comment-pull-request@v2.5.0
-       with:
-         filePath: project/SRS_files/comment.txt
-         pr_number: ${{github.event.number}}
+     - name: read json comment file
+       working-directory: project/SRS_files
+       id: read-json
+       run: |
+         cat comment.json
+         COMMENT_DATA=$(cat comment.json)
+         echo "FILE_PATH=$(echo $COMMENT_DATA | jq -r .FILE_PATH)" >> $GITHUB_ENV
+         echo "LINE_POSITION=$(echo $COMMENT_DATA | jq -r .LINE_POSITION)" >> $GITHUB_ENV
+         echo "COMMENT_BODY=$(echo $COMMENT_DATA | jq -r .COMMENT_BODY)" >> $GITHUB_ENV
        env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+     - name: get pull request Info
+       id: pr-info
+       uses: actions/github-script@v6
+       with:
+         script: |
+           const pr = context.payload.pull_request;
+           return {
+             owner: context.repo.owner,
+             repo: context.repo.repo,
+             pull_number: pr.number,
+             base_sha: pr.base.sha,
+             head_sha: pr.head.sha
+           };
+     - name: create comment on diff
+       env:
+         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+       run: |
+         OWNER=${{ steps.pr-info.outputs.owner }}
+         REPO=${{ steps.pr-info.outputs.repo }}
+         PULL_NUMBER=${{ steps.pr-info.outputs.pull_number }}
+         
+         # Uzyj GitHub API do stworzenia komentarza
+         curl -s -X POST \
+           -H "Authorization: token $GH_TOKEN" \
+           -H "Accept: application/vnd.github.v3+json" \
+           https://api.github.com/repos/$OWNER/$REPO/pulls/$PULL_NUMBER/comments \
+           -d @- <<EOF
+         {
+           "body": "$COMMENT_BODY",
+           "commit_id": "${{ steps.pr-info.outputs.head_sha }}",
+           "path": "$FILE_PATH",
+           "position": $LINE_POSITION
+         }
+         EOF
  # [ posprzatanie srodowiska po pracy ]
      - name: clean up
        working-directory: project
