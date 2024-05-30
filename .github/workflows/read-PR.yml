@@ -103,12 +103,11 @@ jobs:
        with:
          script: |
            const pr = context.payload.pull_request;
-           return {
-             owner: context.repo.owner,
-             repo: context.repo.repo,
-             pull_number: pr.number,
-             head_sha: pr.head.sha
-           };
+           const owner = context.repo.owner;
+           const repo = context.repo.repo;
+           const pull_number = pr.number;
+           const head_sha = pr.head.sha;
+           return { owner, repo, pull_number, head_sha };
      - name: debugging - print environment variables
        run: |
          echo "OWNER: ${{ steps.pr-info.outputs.owner }}"
