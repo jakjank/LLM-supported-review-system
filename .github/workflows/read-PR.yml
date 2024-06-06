@@ -36,7 +36,7 @@ jobs:
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
      - name: identify changed python files
        working-directory: project/SRS_files
-       run: git diff --name-only origin/main HEAD | grep -e '\.py$' -e '\.cpp&' -e '\.cs&' > changed_files.txt
+       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs&\" > changed_files.txt
      - name: create diff file
        working-directory: project/SRS_files
        run: touch diff.txt
