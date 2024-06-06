@@ -34,9 +34,10 @@ jobs:
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-     - name: identify changed python files
+     - name: identify changed code files
        working-directory: project/SRS_files
-       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs&" > changed_files.txt
+       #scheamt dodawania dla kolejnych zmian rozwiniec: "...\.cos$" -> "...\.cos$\|\.nowy$"
+       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs$" > changed_files.txt
      - name: create diff file
        working-directory: project/SRS_files
        run: touch diff.txt
