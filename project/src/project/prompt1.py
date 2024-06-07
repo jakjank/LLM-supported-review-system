@@ -1,11 +1,12 @@
-from .llama_sample import post_question
+from llama_sample import post_question
 import json
 import click
+from check_json import Answer
 
 
 def check_file(filename, ansname=None, context=None, debug=False):
 	"""
-	function uses ollama llama2 model to check if in given
+	function uses ollama llama3 model to check if in given
 	diff from pull request should some variable names be changed
 	it also checks for unnecessary fragments of code
 	:param filename: name of file with diff from pull request
@@ -15,7 +16,6 @@ def check_file(filename, ansname=None, context=None, debug=False):
 	:debug: if True, print answer instead of saving it in a "ansname" file
 	saved in a file
 	"""
-
 
 	with open(filename, "r") as data:
 		with open(context, "r") as context_fd:
@@ -27,26 +27,41 @@ def check_file(filename, ansname=None, context=None, debug=False):
 					return
 				
 			# if diff is not empty:
+			
 			context_data = context_fd.read()
 			variables = post_question(f""" Please return all variable names from
 							 this diff from pull-request:
 							  {diff}.
 							This is the context of the diff: {context_data}.
-							Please use json format to return the answer. All variables 
-							 should be saved in the "variables" key. Any extra comment 
-							 on variables or other things
-							 should be provided using the
-							 "comment" key. Please do not write anything else
+							Please use following json format to return the answer:
+								'variables': List[str] # list of all variables
+								'comment': str # comment about variables 
+								Please do not write anything else
 							 that the json object, its really important.
 								  """)	
 			
+			print(variables)
+
 			# making json object from string if possible:
 			try:
 				variables = json.loads(variables)
 				variables = variables["variables"]
 			except json.JSONDecodeError or KeyError:
-				if debug:
-					print("Error in json format")
+				# extracting json object from string
+				l = variables.find("{") # finding first occurence of {
+				r = variables.rfind("}") # finding last occurence of }
+				if l != -1 and r != -1:
+					variables = variables[l:r+1]
+					try:
+						variables = json.loads(variables)
+						variables = variables["variables"]
+					except json.JSONDecodeError or KeyError:
+						# if json object is still not correct
+						print("Error in json format")
+
+
+			print(variables)	
+			# checking if json format is correct:
 
 
 			variables_to_change = post_question(f"""Check if all variable names from
@@ -56,21 +71,37 @@ def check_file(filename, ansname=None, context=None, debug=False):
 								The context of the diff is: {context_data}
 								If the variable names are not correct, please provide
 								a new diff with correct variable names as well as
-								a comment on why the variable names should be changed below.""")
+								a comment on why the variable names should be changed.
+								Use the following json format:
 
-			# unnecessary_code = post_question("Check if in that diff"
-			# 					"are some unnecessary fragments"
-			# 					"of code that should be replaced or can"
-			# 					"be just removed")
+								"FILE_PATH": str # path to the file
+ 								"LINE_POSITION": int # line number where the variable is
+								"COMMENT_BODY": str # change that should be made in the code
+								
+								Please do not write anything else.
+								""")
 
-			if debug:
-				print(variables)
-				print("\n\n\n\n")
-				print(variables_to_change)
-			else:
+			print("\n\n\n"+variables_to_change+"\n\n\n")
+
+			# checking if json format is correct:
+			try:
+				Answer.model_validate(variables_to_change)
 				with open(ansname, "w") as ans:
 						ans.write(variables_to_change)
+			except Exception as e:
+				try:
+					l = variables_to_change.find("{") # finding first occurence of {
+					r = variables_to_change.rfind("}") # finding last occurence of }
+					if l != -1 and r != -1:
+						variables_to_change = variables_to_change[l:r+1]
+						Answer.model_validate(variables_to_change)
+						with open(ansname, "w") as ans:
+							ans.write(variables_to_change)
+				except Exception as e:
+					print("Wrong or not existing json format")
+					return
 
+				
 
 
 @click.command()
