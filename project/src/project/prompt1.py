@@ -3,6 +3,37 @@ import json
 import click
 from check_json import Answer
 
+variables_schema = { # daje właśnie w takej formie -> działa
+	"variables": {
+		"type": "array",
+		"items": {
+			"type": "string",
+			"description": "Variable name"
+		}
+	}
+}
+
+answer_schema = {
+	"type": "array",
+	"items": 
+		{	
+			"FILE_PATH": {
+				"type": "string",
+				"description": "Path to the file"
+			},
+			"LINE_POSITION": {
+				"type": "integer",
+				"description": "Line number where the change happens"
+			},
+			"COMMENT_BODY": {
+				"type": "string",
+				"description": "New code that should be in this line"
+			}
+		
+		}
+}
+
+
 
 def check_file(filename, ansname=None, context=None, debug=False):
 	"""
@@ -29,18 +60,16 @@ def check_file(filename, ansname=None, context=None, debug=False):
 			# if diff is not empty:
 			
 			context_data = context_fd.read()
-			variables = post_question(f""" Please return all variable names from
-							 this diff from pull-request:
-							  {diff}.
-							This is the context of the diff: {context_data}.
-							Please use following json format to return the answer:
-								'variables': List[str] # list of all variables
-								'comment': str # comment about variables 
-								Please do not write anything else
-							 that the json object, its really important.
-								  """)	
+			variables = post_question(f"""
+							 You are a helpful AI assistant. Given a diff file and context
+							 of changes the assistant will return all variable names from
+							 the diff file. Output in JSON using the schema 
+							 defined here: {variables_schema}.
+							 The diff file: {diff}.
+							 This is the context of the diff: {context_data}.""")	
 			
-			print(variables)
+			variables = variables.strip()
+			if debug: print(variables)
 
 			# making json object from string if possible:
 			try:
@@ -50,7 +79,8 @@ def check_file(filename, ansname=None, context=None, debug=False):
 				# extracting json object from string
 				l = variables.find("{") # finding first occurence of {
 				r = variables.rfind("}") # finding last occurence of }
-				if l != -1 and r != -1:
+				if l > -1 and r > -1 and l < r:
+					print(f"l = {l}, r = {r}")
 					variables = variables[l:r+1]
 					try:
 						variables = json.loads(variables)
@@ -60,28 +90,42 @@ def check_file(filename, ansname=None, context=None, debug=False):
 						print("Error in json format")
 
 
-			print(variables)	
+			if debug: print(variables)
 			# checking if json format is correct:
 
 
-			variables_to_change = post_question(f"""Check if all variable names from
-								{variables} are correct and will not create problems later
-								in the code. If not, suggest some new variable names.
-								The diff file is: {diff}
-								The context of the diff is: {context_data}
-								If the variable names are not correct, please provide
-								a new diff with correct variable names as well as
-								a comment on why the variable names should be changed.
-								Use the following json format:
-
-								"FILE_PATH": str # path to the file
- 								"LINE_POSITION": int # line number where the variable is
-								"COMMENT_BODY": str # change that should be made in the code
-								
-								Please do not write anything else.
+			variables_to_change = post_question(f"""
+								You are a helpful AI assistant. Given diff file and context
+								of changes the assistant will return suggest changes that 
+								should be made in order to make sure all variable names 
+								are suitable. The changes is a list of dictionaries with
+								keys: FILE_PATH, LINE_POSITION, COMMENT_BODY. Output in JSON
+								using the schema defined here: {answer_schema}.
+								Output example is:""" + """
+								[
+									{
+										'FILE_PATH': 'project/src/project/prompt1.py'
+										'LINE_POSITION': 51
+										'COMMENT_BODY': '	with open(filename, "r") as diff_file:'
+									},
+									{
+										'FILE_PATH': 'project/src/project/prompt1.py'
+										'LINE_POSITION': 53
+										'COMMENT_BODY': '			diff = diff_file.read()'
+									},
+									{
+										'FILE_PATH': 'project/src/project/prompt1.py'
+										'LINE_POSITION': 130
+										'COMMENT_BODY': '				with open(ansname, "w") as ans_fd:'
+									}
+								]""" + f"""
+								The diff file is: {diff}.
+								Variables are: {variables}.
+								The context of the diff is: {context_data}.
 								""")
 
-			print("\n\n\n"+variables_to_change+"\n\n\n")
+			variables_to_change = variables_to_change.strip()
+			print("WARIABLES TO CHANGE:\n", variables_to_change, "\n")
 
 			# checking if json format is correct:
 			try:
@@ -98,7 +142,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 						with open(ansname, "w") as ans:
 							ans.write(variables_to_change)
 				except Exception as e:
-					print("Wrong or not existing json format")
+					print("Wrong or not existing json format (exception: ", e, ")")
 					return
 
 				
