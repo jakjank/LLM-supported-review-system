@@ -75,6 +75,8 @@ jobs:
      - name: set python path
        working-directory: project
        run: export PYTHONPATH=$PWD/src
+     - name: check structure
+       run: tree project
      - name: run prompt-1
        working-directory: project
        run: python -m src.project
