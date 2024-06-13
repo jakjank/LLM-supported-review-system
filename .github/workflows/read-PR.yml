@@ -34,9 +34,12 @@ jobs:
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-     - name: identify changed python files
+     - name: create changed_files file
+       run: touch changed_files.txt
+     - name: identify changed code files
        working-directory: project/SRS_files
-       run: git diff --name-only origin/main HEAD | grep '\.py$' > changed_files.txt
+       #scheamt dodawania dla kolejnych zmian rozwiniec: "...\.cos$" -> "...\.cos$\|\.nowy$"
+       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs$" > changed_files.txt || true
      - name: create diff file
        working-directory: project/SRS_files
        run: touch diff.txt
@@ -63,18 +66,20 @@ jobs:
        working-directory: project/SRS_files
        run: touch comment.json
  # [ zadawanie promptow llamie ]
-#     - name: prepare package
-#       working-directory: project
-#       run: pdm build
-#     - name: install package
-#       working-directory: project
-#       run: pip install dist/project-0.1.0-py3-none-any.whl
-#     - name: set python path
-#       working-directory: project
-#       run: export PYTHONPATH=$PWD/src
-#     - name: run prompt-1
-#       working-directory: project
-#       run: python -m project
+     - name: prepare package
+       working-directory: project
+       run: pdm build
+     - name: install package
+       working-directory: project
+       run: pip install dist/project-0.1.0-py3-none-any.whl
+     - name: set python path
+       working-directory: project
+       run: export PYTHONPATH=$PWD/src
+     - name: check structure
+       run: tree project
+     - name: run prompt-1
+       working-directory: project
+       run: python -m src.project
      - name: testing - put example content in comment file
        working-directory: project/SRS_files
        run: |
