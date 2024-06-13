@@ -15,13 +15,13 @@ jobs:
      - name: checkout
        uses: actions/checkout@v4
   # [ przygotowanie llamy ]
-     - name: install ollama
-       run: curl -fsSL https://ollama.com/install.sh | sh 
-     - name: download llama3
-       run: ollama pull llama3
-     - name: start llama3
-       run: ollama serve
-       continue-on-error: true
+  #   - name: install ollama
+  #     run: curl -fsSL https://ollama.com/install.sh | sh 
+  #   - name: download llama3
+  #     run: ollama pull llama3
+  #   - name: start llama3
+  #     run: ollama serve
+  #     continue-on-error: true
  # [ przygotowanie pdm - tego pewnie kiedy nie bedzie - chcemy miec w przyszlosci Dockera i skompilowana paczke pythonowa ]
      - name: install pdm
        run: curl -sSL https://pdm-project.org/install-pdm.py | python3 -
@@ -34,6 +34,10 @@ jobs:
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
+     - name: GIT DIFF TEST
+       run: git diff --name-only origin/main HEAD
+     - name: GIT + GREP TEST
+       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs$"
      - name: identify changed code files
        working-directory: project/SRS_files
        #scheamt dodawania dla kolejnych zmian rozwiniec: "...\.cos$" -> "...\.cos$\|\.nowy$"
