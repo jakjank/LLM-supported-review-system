@@ -76,7 +76,7 @@ jobs:
        working-directory: project
        run: export PYTHONPATH=$PWD/src
      - name: run prompt-1
-       working-directory: project
+       working-directory: project/src/project
        run: python -m project
      - name: testing - put example content in comment file
        working-directory: project/SRS_files
