@@ -34,15 +34,12 @@ jobs:
        run: mkdir SRS_files
      - name: fetch
        run: git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
-     - name: GIT DIFF TEST
-       run: git diff --name-only origin/main HEAD
-     - name: GIT + GREP TEST
-       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs$" || true
      - name: identify changed code files
        working-directory: project/SRS_files
        #scheamt dodawania dla kolejnych zmian rozwiniec: "...\.cos$" -> "...\.cos$\|\.nowy$"
-       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs$" > changed_files.txt
-       continue-on-error: true
+       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs$" > changed_files.txt || true
+     - name: check changed_files
+       run: cat changed_filex.txt
      - name: create diff file
        working-directory: project/SRS_files
        run: touch diff.txt
