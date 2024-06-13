@@ -1,4 +1,4 @@
-from llama_sample import post_question
+from llama_sample.py import post_question
 import json
 import click
 
