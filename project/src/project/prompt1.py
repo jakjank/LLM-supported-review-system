@@ -1,7 +1,7 @@
 from .llama_sample import post_question
 import json
 import click
-from check_json import Answer
+from .check_json import Answer
 
 
 def check_file(filename, ansname=None, context=None, debug=False):
