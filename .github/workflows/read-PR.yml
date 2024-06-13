@@ -37,7 +37,7 @@ jobs:
      - name: GIT DIFF TEST
        run: git diff --name-only origin/main HEAD
      - name: GIT + GREP TEST
-       run: git diff --name-only origin/main HEAD | grep "\.py$\|\.cpp$\|\.cs$"
+       run: git diff --name-only origin/main HEAD | grep -s "\.py$\|\.cpp$\|\.cs$"
      - name: identify changed code files
        working-directory: project/SRS_files
        #scheamt dodawania dla kolejnych zmian rozwiniec: "...\.cos$" -> "...\.cos$\|\.nowy$"
