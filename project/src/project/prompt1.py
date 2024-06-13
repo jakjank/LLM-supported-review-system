@@ -3,6 +3,56 @@ import json
 import click
 from check_json import Answer
 
+
+
+# # ???
+# {'$defs': 
+#  	{'Change': 
+#    		{'properties': 
+# 	  		{'FILE_PATH': 
+# 	  			{'title': 'File Path', 
+# 	   			'type': 'string'}, 
+# 			'LINE_POSITION': 
+# 				{'title': 'Line Position', 
+# 	 			'type': 'integer'}, 
+# 			'COMMENT_BODY': 
+# 				{'title': 'Comment Body', 
+# 	 			'type': 'string'}
+# 			}, 
+# 		'required': 
+# 			['FILE_PATH', 
+#  			'LINE_POSITION', 
+# 			'COMMENT_BODY'],
+# 		 'title': 'Change',
+# 		 'type': 'object'}
+# 	}, 
+# 	'properties': 
+# 		{'changes': 
+#    			{'items': 
+# 	   			{'$ref': '#/$defs/Change'},
+# 				  'title': 'Changes', 'type': 'array'
+# 			}
+# 		},
+# 	'required': ['changes'], 
+# 	'title': 'Answer', 
+# 	'type': 'object'
+# }
+# 
+# end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 variables_schema = { # daje właśnie w takej formie -> działa
 	"variables": {
 		"type": "array",
@@ -14,8 +64,9 @@ variables_schema = { # daje właśnie w takej formie -> działa
 }
 
 answer_schema = {
-	"type": "array",
-	"items": 
+	"changes":{
+		"type": "array",
+		"items": 
 		{	
 			"FILE_PATH": {
 				"type": "string",
@@ -31,6 +82,7 @@ answer_schema = {
 			}
 		
 		}
+	}
 }
 
 
