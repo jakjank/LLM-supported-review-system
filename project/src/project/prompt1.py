@@ -116,6 +116,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 				variables = variables["variables"]
 			except Exception as e:
 				# extracting json object from string
+				variables = str(variables)
 				l = variables.find("{") # finding first occurence of {
 				r = variables.rfind("}") # finding last occurence of }
 				if l > -1 and r > -1 and l < r:
@@ -126,7 +127,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 						variables = variables["variables"]
 					except Exception as e:
 						# if json object is still not correct
-						print("Error in json format (exception = ", e, ")")
+						print("Error in json format (exception = ", e, "), variables:", variables)
 
 
 			if debug: print(variables)
@@ -141,7 +142,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 								keys: FILE_PATH, LINE_POSITION, COMMENT_BODY. Output in JSON
 								using the schema defined here: {answer_schema}.
 								Output example is:""" + """
-								[
+								{'changes':[
 									{
 										'FILE_PATH': 'project/src/project/prompt1.py'
 										'LINE_POSITION': 51
@@ -157,7 +158,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 										'LINE_POSITION': 130
 										'COMMENT_BODY': '				with open(ansname, "w") as ans_fd:'
 									}
-								]""" + f"""
+								]}""" + f"""
 								The diff file is: {diff}.
 								Variables are: {variables}.
 								The context of the diff is: {context_data}.
