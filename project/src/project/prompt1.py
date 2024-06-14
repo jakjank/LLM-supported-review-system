@@ -114,7 +114,7 @@ def check_file(filename, ansname=None, context=None, debug=False):
 			try:
 				variables = json.loads(variables)
 				variables = variables["variables"]
-			except json.JSONDecodeError or KeyError:
+			except Exception as e:
 				# extracting json object from string
 				l = variables.find("{") # finding first occurence of {
 				r = variables.rfind("}") # finding last occurence of }
@@ -124,9 +124,9 @@ def check_file(filename, ansname=None, context=None, debug=False):
 					try:
 						variables = json.loads(variables)
 						variables = variables["variables"]
-					except json.JSONDecodeError or KeyError:
+					except Exception as e:
 						# if json object is still not correct
-						print("Error in json format")
+						print("Error in json format (exception = ", e, ")")
 
 
 			if debug: print(variables)
