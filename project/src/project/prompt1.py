@@ -5,54 +5,6 @@ from check_json import Answer
 
 
 
-# # ???
-# {'$defs': 
-#  	{'Change': 
-#    		{'properties': 
-# 	  		{'FILE_PATH': 
-# 	  			{'title': 'File Path', 
-# 	   			'type': 'string'}, 
-# 			'LINE_POSITION': 
-# 				{'title': 'Line Position', 
-# 	 			'type': 'integer'}, 
-# 			'COMMENT_BODY': 
-# 				{'title': 'Comment Body', 
-# 	 			'type': 'string'}
-# 			}, 
-# 		'required': 
-# 			['FILE_PATH', 
-#  			'LINE_POSITION', 
-# 			'COMMENT_BODY'],
-# 		 'title': 'Change',
-# 		 'type': 'object'}
-# 	}, 
-# 	'properties': 
-# 		{'changes': 
-#    			{'items': 
-# 	   			{'$ref': '#/$defs/Change'},
-# 				  'title': 'Changes', 'type': 'array'
-# 			}
-# 		},
-# 	'required': ['changes'], 
-# 	'title': 'Answer', 
-# 	'type': 'object'
-# }
-# 
-# end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 variables_schema = { # daje właśnie w takej formie -> działa
 	"variables": {
 		"type": "array",
@@ -63,7 +15,42 @@ variables_schema = { # daje właśnie w takej formie -> działa
 	}
 }
 
-answer_schema = {
+answer_schema = {'$defs': 
+ 	{'Change': 
+   		{'properties': 
+	  		{'FILE_PATH': 
+	  			{'title': 'File Path', 
+	   			'type': 'string'}, 
+			'LINE_POSITION': 
+				{'title': 'Line Position', 
+	 			'type': 'integer'}, 
+			'COMMENT_BODY': 
+				{'title': 'Comment Body', 
+	 			'type': 'string'}
+			}, 
+		'required': 
+			['FILE_PATH', 
+ 			'LINE_POSITION', 
+			'COMMENT_BODY'],
+		 'title': 'Change',
+		 'type': 'object'}
+	}, 
+	'properties': {
+		'changes': {
+			'items': {'$ref': '#/$defs/Change'},
+			'title': 'Changes', 'type': 'array'
+		}
+	},
+	'required': ['changes'], 
+	'title': 'Answer', 
+	'type': 'object'
+}
+
+
+
+
+
+nic = {
 	"changes":{
 		"type": "array",
 		"items": 
@@ -176,26 +163,27 @@ def check_file(filename, ansname=None, context=None, debug=False):
 								The context of the diff is: {context_data}.
 								""")
 
-			variables_to_change = variables_to_change.strip()
+			variables_to_change = variables_to_change.strip() # str
 			print("WARIABLES TO CHANGE:\n", variables_to_change, "\n")
 
 			# checking if json format is correct:
 			try:
+				variables_to_change = json.loads(variables_to_change)
 				Answer.model_validate(variables_to_change)
 				with open(ansname, "w") as ans:
-						ans.write(variables_to_change)
+						ans.write(str(variables_to_change))
+			# except Exception as e:
+				# try:
+				# 	l = variables_to_change.find("{") # finding first occurence of {
+				# 	r = variables_to_change.rfind("}") # finding last occurence of }
+				# 	if l != -1 and r != -1:
+				# 		variables_to_change = variables_to_change[l:r+1]
+				# 		Answer.model_validate(variables_to_change)
+				# 		with open(ansname, "w") as ans:
+				# 			ans.write(variables_to_change)
 			except Exception as e:
-				try:
-					l = variables_to_change.find("{") # finding first occurence of {
-					r = variables_to_change.rfind("}") # finding last occurence of }
-					if l != -1 and r != -1:
-						variables_to_change = variables_to_change[l:r+1]
-						Answer.model_validate(variables_to_change)
-						with open(ansname, "w") as ans:
-							ans.write(variables_to_change)
-				except Exception as e:
-					print("Wrong or not existing json format (exception: ", e, ")")
-					return
+				print("Wrong or not existing json format (exception: ", e, ")")
+				return
 
 				
 
