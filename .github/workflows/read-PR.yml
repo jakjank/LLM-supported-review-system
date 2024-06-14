@@ -102,7 +102,7 @@ jobs:
          PULL_NUMBER: ${{ github.event.number }}
        run: |
          # Uzyj GitHub API do stworzenia komentarza, iterując się po obiektach z jsona
-         echo "$COMMENT_DATA" | jq -c '.[]' | while read -r comment; do
+         echo "$COMMENT_DATA" | jq -c '.changes[]' | while read -r comment; do
           FILE_PATH=$(echo "$comment" | jq -r .FILE_PATH)
           LINE_POSITION=$(echo "$comment" | jq -r .LINE_POSITION)
           COMMENT_BODY=$(echo "$comment" | jq -r .COMMENT_BODY)
